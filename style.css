@@ -22,7 +22,7 @@ h1,h2,h3{font-family:var(--display);font-weight:300;text-transform:uppercase;let
 /* шапка */
 .nav{position:fixed;inset:0 0 auto;z-index:80;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px var(--pad);transition:background .5s,backdrop-filter .5s,border-color .5s;border-bottom:1px solid transparent}
 .nav.solid{background:rgba(5,8,13,.55);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);border-color:var(--line)}
-.logo{font-family:var(--display);font-size:30px;font-weight:400;text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:10px}
+.logo{font-family:var(--display);font-size:28px;font-weight:400;text-transform:uppercase;letter-spacing:.06em;display:flex;align-items:center;gap:9px;white-space:nowrap}
 .logo i{width:9px;height:9px;border-radius:50%;background:var(--berry);box-shadow:0 0 18px var(--berry)}
 .nav nav{display:flex;gap:34px}
 .nav nav a,.nav-cta{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase}
@@ -125,6 +125,8 @@ footer{padding:26px var(--pad);display:flex;justify-content:space-between;gap:20
 
 @media (max-width:900px){
   .nav nav{display:none}
+  .hide-m{display:none}
+  .nav-cta{padding:10px 16px}
   .hero-meta span:last-child{display:none}
   .hero-foot{flex-direction:column;align-items:flex-start}
   .statement{grid-template-columns:1fr}
