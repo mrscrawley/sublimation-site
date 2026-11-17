@@ -75,11 +75,11 @@ function draw(p) {
   let r, x, y;
   if (H > W) {
     /* телефон: облако фруктов крупно, в верхней части кадра */
-    r = (W * 1.55 / iw) * zoom; x = (W - iw * r) / 2; y = H * .38 - ih * r * .46;
+    r = (W * 1.55 / iw) * zoom; x = (W - iw * r) / 2; y = H * .7 - ih * r * .46;
   } else {
     /* широкий экран: облако над текстом стадий, левее приборов */
-    const h0 = Math.min(H * .7, W * .42);
-    r = (h0 / ih) * zoom; x = W * .42 - iw * r / 2; y = H * .33 - ih * r * .46;
+    const h0 = Math.min(H * .62, W * .38);
+    r = (h0 / ih) * zoom; x = W * .48 - iw * r / 2; y = H * .68 - ih * r * .46;
   }
   const w = Math.round(iw * r), h = Math.round(ih * r);
   /* кадр растворяется овальной маской по прозрачности: ни рамки, ни подложки, ни линии */
@@ -282,7 +282,7 @@ if (!reduce) {
     gsap.to(btn, { scale: 1.25, opacity: 0, duration: reduce ? 0 : .18, ease: 'power2.out' });
     /* раскрытие формы не ждёт окончания анимации ягоды */
     setTimeout(() => {
-      btn.style.display = 'none'; form.hidden = false;
+      btn.style.display = 'none'; form.hidden = false; form.closest('.cta').classList.add('open');
       /* форма вырастает из точки, где была ягода */
       const fr = form.getBoundingClientRect();
       form.style.transformOrigin = `${br.left + br.width / 2 - fr.left}px ${br.top + br.height / 2 - fr.top}px`;
@@ -298,7 +298,7 @@ if (!reduce) {
   document.querySelectorAll('a[href="#contact"]').forEach(a => a.addEventListener('click', () => setTimeout(openForm, 1500)));
 
   document.getElementById('rfqClose').addEventListener('click', () => {
-    form.hidden = true; btn.style.display = ''; delete btn.dataset.gone; btn.setAttribute('aria-expanded', 'false');
+    form.hidden = true; form.closest('.cta').classList.remove('open'); btn.style.display = ''; delete btn.dataset.gone; btn.setAttribute('aria-expanded', 'false');
     gsap.fromTo(btn, { scale: .6, opacity: 0 }, { scale: 1, opacity: 1, duration: .8, ease: 'back.out(1.6)' }); btn.focus({ preventScroll: true });
   });
 
