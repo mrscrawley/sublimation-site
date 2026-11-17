@@ -196,7 +196,7 @@ if (!reduce) {
 if (!reduce) {
   /* разлом по прокрутке: настоящий ролик в замедлении, кадры листаются скроллом */
   const B = window.BRK || { n: 0 }, bc = document.getElementById('brk'), bx = bc.getContext('2d'), bf = [];
-  const bsrc = i => `media/break/k${String(i + 1).padStart(4, '0')}.jpg`;
+  const bsrc = i => `media/crack/c${String(i + 1).padStart(4, '0')}.jpg`;
   const bload = i => { if (bf[i] || i < 0 || i >= B.n) return; const im = new Image(); im.decoding = 'async'; im.src = bsrc(i); bf[i] = im; im.onload = () => { im.ok = true; if (bShown < 0) bDraw(bLast); }; };
   [6, 3, 1].forEach((st, k) => setTimeout(() => { for (let i = 0; i < B.n; i += st) bload(i); }, 300 + k * 400));
   let bShown = -1, bLast = 0;
@@ -214,8 +214,8 @@ if (!reduce) {
     bx.fillStyle = g; bx.fillRect(0, 0, W, H); bShown = i;
   }
   ScrollTrigger.create({ trigger: '.st-media', start: 'center 90%', end: 'center 30%', scrub: .5, onUpdate: s => {
-    /* первые 15% — ягода целая, дальше трещина и разлом в темпе прокрутки */
-    const p = Math.max(0, (s.progress - .15) / .85), i = Math.min(B.n - 1, Math.round(p * (B.n - 1)));
+    /* первые 25% — ягода целая, дальше хрупкий скол и половинки расходятся в темпе прокрутки */
+    const p = Math.max(0, (s.progress - .25) / .75), i = Math.min(B.n - 1, Math.round(p * (B.n - 1)));
     if (i !== bShown) bDraw(i);
   } });
   addEventListener('resize', () => { bShown = -1; bDraw(bLast); });
