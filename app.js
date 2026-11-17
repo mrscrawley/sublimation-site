@@ -49,7 +49,7 @@ const TOTAL = SEQ.n1 + SEQ.n2;
 const cv = document.getElementById('seq'), ctx = cv.getContext('2d');
 const off = document.createElement('canvas'), octx = off.getContext('2d');
 const frames = new Array(TOTAL);
-const src = i => i < SEQ.n1 ? `media/seq/a${String(i + 1).padStart(4, '0')}.jpg` : `media/seq/b${String(i - SEQ.n1 + 1).padStart(4, '0')}.jpg`;
+const src = i => i < SEQ.n1 ? `media/seqw/a${String(i + 1).padStart(4, '0')}.webp` : `media/seqw/b${String(i - SEQ.n1 + 1).padStart(4, '0')}.webp`;
 function load(i) { if (frames[i] || i < 0 || i >= TOTAL) return; const im = new Image(); im.decoding = 'async'; im.src = src(i); frames[i] = im; im.onload = () => { im.ok = true; if (i === lastDrawn || lastDrawn < 0) dirty = true; }; }
 /* сначала редкая сетка кадров, потом все подряд */
 [8, 4, 2, 1].forEach((step, k) => setTimeout(() => { for (let i = 0; i < TOTAL; i += step) load(i); }, k * 500));
@@ -83,15 +83,8 @@ function draw(p) {
     r = (h0 / ih) * zoom; x = W * .48 - iw * r / 2; y = H * .68 - ih * r * .46;
   }
   const w = Math.round(iw * r), h = Math.round(ih * r);
-  /* кадр растворяется овальной маской по прозрачности: ни рамки, ни подложки, ни линии */
-  if (off.width !== w || off.height !== h) { off.width = w; off.height = h; }
-  octx.globalCompositeOperation = 'source-over'; octx.clearRect(0, 0, w, h); octx.drawImage(im, 0, 0, w, h);
-  octx.globalCompositeOperation = 'destination-in';
-  octx.save(); octx.translate(w / 2, h * .46); octx.scale(1, h / w * 1.25);
-  const g = octx.createRadialGradient(0, 0, w * .26, 0, 0, w * .5);
-  g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(.6, 'rgba(0,0,0,.85)'); g.addColorStop(1, 'rgba(0,0,0,0)');
-  octx.fillStyle = g; octx.fillRect(-w, -h * 2, w * 2, h * 4); octx.restore();
-  ctx.drawImage(off, x, y);
+  /* фон кадров вырезан в прозрачность заранее: фрукты стоят прямо на странице, без маски и рамки */
+  ctx.drawImage(im, x, y, w, h);
 }
 
 /* ключевые точки цикла: p, T °C, P мбар, влага % */
@@ -196,7 +189,7 @@ if (!reduce) {
 if (!reduce) {
   /* разлом по прокрутке: настоящий ролик в замедлении, кадры листаются скроллом */
   const B = window.BRK || { n: 0 }, bc = document.getElementById('brk'), bx = bc.getContext('2d'), bf = [];
-  const bsrc = i => `media/crack/c${String(i + 1).padStart(4, '0')}.jpg`;
+  const bsrc = i => `media/crackw/c${String(i + 1).padStart(4, '0')}.webp`;
   const bload = i => { if (bf[i] || i < 0 || i >= B.n) return; const im = new Image(); im.decoding = 'async'; im.src = bsrc(i); bf[i] = im; im.onload = () => { im.ok = true; if (bShown < 0) bDraw(bLast); }; };
   [6, 3, 1].forEach((st, k) => setTimeout(() => { for (let i = 0; i < B.n; i += st) bload(i); }, 300 + k * 400));
   let bShown = -1, bLast = 0;
@@ -206,12 +199,7 @@ if (!reduce) {
     if (!im || !im.ok) return;
     const d = Math.min(1.5, devicePixelRatio || 1), W = Math.round(bc.clientWidth * d), H = Math.round(bc.clientHeight * d);
     if (bc.width !== W || bc.height !== H) { bc.width = W; bc.height = H; }
-    bx.globalCompositeOperation = 'source-over'; bx.clearRect(0, 0, W, H); bx.drawImage(im, 0, 0, W, H);
-    /* фон ролика совпадает со страницей; края всё равно растворяем по прозрачности */
-    bx.globalCompositeOperation = 'destination-in';
-    const g = bx.createRadialGradient(W / 2, H / 2, W * .32, W / 2, H / 2, W * .5);
-    g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
-    bx.fillStyle = g; bx.fillRect(0, 0, W, H); bShown = i;
+    bx.clearRect(0, 0, W, H); bx.drawImage(im, 0, 0, W, H); bShown = i;
   }
   ScrollTrigger.create({ trigger: '.st-media', start: 'center 90%', end: 'center 30%', scrub: .5, onUpdate: s => {
     /* первые 25% — ягода целая, дальше хрупкий скол и половинки расходятся в темпе прокрутки */
