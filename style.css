@@ -43,7 +43,8 @@ a:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
 /* первый экран */
 .hero{height:100svh;min-height:560px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--pad) clamp(22px,4vh,40px)}
 .hero-media{position:absolute;inset:-6% 0;will-change:transform}
-.hero-media video{width:100%;height:100%;object-fit:cover;object-position:70% 50%}
+.hero-media video{width:100%;height:100%;object-fit:cover;object-position:50% 62%;transform:translateX(18%)}
+@media (max-width:900px){.hero-media video{transform:none;object-position:72% 50%}}
 .hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--bg-rgb),.92) 0%,rgba(var(--bg-rgb),.6) 34%,rgba(var(--bg-rgb),0) 60%),linear-gradient(180deg,rgba(var(--bg-rgb),.55) 0%,rgba(var(--bg-rgb),0) 22%,rgba(var(--bg-rgb),0) 62%,var(--bg) 100%)}
 .hero-meta{position:absolute;top:96px;left:var(--pad);right:var(--pad);display:flex;justify-content:space-between;color:var(--ink);opacity:.8}
 .hero-title{position:relative;font-size:clamp(64px,min(15vw,25svh),300px);margin-left:-.02em}
