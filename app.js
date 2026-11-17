@@ -193,7 +193,18 @@ if (!reduce) {
 
 /* структура */
 if (!reduce) {
-  gsap.fromTo('.st-media', { yPercent: 10, rotate: -6, scale: .9 }, { yPercent: -6, rotate: 4, scale: 1, ease: 'none', scrollTrigger: { trigger: '.structure', start: 'top bottom', end: 'bottom top', scrub: true } });
+  /* разлом по прокрутке: целая ягода -> трещина -> половинки расходятся (отрезок вдоль нормали к линии разлома) */
+  const sw = document.querySelector('.st-whole'), ha = document.querySelector('.st-half.a'), hb = document.querySelector('.st-half.b');
+  ScrollTrigger.create({ trigger: '.st-media', start: 'center 85%', end: 'center 35%', scrub: .6, onUpdate: s => {
+    const p = s.progress, open = gsap.parseEase('power2.out')(Math.max(0, (p - .42) / .58));
+    const crack = p < .38 ? 0 : 1;
+    sw.style.opacity = 1 - Math.min(1, Math.max(0, (p - .36) / .06));
+    sw.style.transform = `rotate(${(-4 + p * 6).toFixed(2)}deg) scale(${(.9 - .02 * Math.sin(Math.min(p / .4, 1) * Math.PI)).toFixed(3)})`;
+    [ha, hb].forEach(e => e.style.opacity = crack ? Math.min(1, (p - .36) / .06) : 0);
+    const d = 1 - open * 1.45; /* 1 = сомкнуты, 0 = как на фото, меньше 0 = расходятся шире */
+    ha.style.transform = `translate(${(5.6 * d).toFixed(2)}%, ${(4.2 * d).toFixed(2)}%) rotate(${(4 * d).toFixed(2)}deg)`;
+    hb.style.transform = `translate(${(-5.6 * d).toFixed(2)}%, ${(-4.2 * d).toFixed(2)}%) rotate(${(-4 * d).toFixed(2)}deg)`;
+  } });
   gsap.from('.lead', { opacity: 0, y: 30, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.lead', start: 'top 88%' } });
   document.querySelectorAll('[data-count]').forEach(n => {
     const to = +n.dataset.count, pre = n.dataset.prefix || '', suf = n.dataset.suffix || '', o = { v: 0 };

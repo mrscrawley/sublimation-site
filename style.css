@@ -105,13 +105,14 @@ a:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
 .names button:hover,.names button:focus-visible{color:rgba(14,23,35,.6)}
 .names button.on{color:var(--ink);transform:translateX(14px)}
 .names button.on i{color:var(--berry)}
-.vitrine{position:relative;aspect-ratio:1;max-height:76svh;width:100%;margin-inline:auto}
+.vitrine{position:relative;width:100%;display:flex;flex-direction:column;align-items:center;gap:clamp(14px,2.4vh,26px)}
+.vimg{position:relative;width:min(100%,58svh);aspect-ratio:1}
 .aura{position:absolute;inset:-18%;border-radius:50%;background:radial-gradient(closest-side,var(--tone,#f3c7d3) 0%,color-mix(in srgb,var(--tone,#f3c7d3) 55%,transparent) 45%,transparent 100%);transition:background 1s var(--ease);filter:blur(6px)}
-.fly{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;opacity:0;transform:scale(.86) translateY(30px) rotate(-6deg);transition:opacity .7s,transform 1.1s var(--ease);filter:drop-shadow(0 40px 40px rgba(90,20,40,.18))}
+.fly{position:absolute;inset:4%;width:92%;height:92%;object-fit:contain;opacity:0;transform:scale(.86) translateY(30px) rotate(-6deg);transition:opacity .7s,transform 1.1s var(--ease);filter:drop-shadow(0 40px 40px rgba(90,20,40,.18))}
 .fly.on{opacity:1;transform:none}
 .vitrine .float{animation:levit 6s ease-in-out infinite}
 @keyframes levit{0%,100%{translate:0 -10px}50%{translate:0 12px}}
-.vmeta{position:absolute;left:50%;bottom:-2%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;width:100%}
+.vmeta{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;width:100%}
 .vmeta b{font-family:var(--display);font-weight:300;text-transform:uppercase;font-size:clamp(34px,3.2vw,56px);line-height:.9}
 .vmeta .chips{justify-content:center}
 .chips{display:flex;flex-wrap:wrap;gap:6px;padding:0 4px}
@@ -122,7 +123,9 @@ a:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
 .structure{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(28px,5vw,90px);align-items:center;padding:clamp(80px,12vw,180px) var(--pad)}
 .st-media{position:relative;aspect-ratio:1;max-height:84svh;width:100%;margin-inline:auto}
 .st-media::before{content:"";position:absolute;inset:-12%;border-radius:50%;background:radial-gradient(closest-side,rgba(247,190,200,.75),rgba(247,190,200,.3) 50%,transparent);filter:blur(10px)}
-.st-media img{position:relative;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 50px 50px rgba(110,20,45,.2));animation:levit 7s ease-in-out infinite}
+.st-inner{position:absolute;inset:0;animation:levit 7s ease-in-out infinite}
+.st-inner img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 50px 50px rgba(110,20,45,.2));will-change:transform,opacity}
+.st-half{opacity:0}
 .st-copy{display:flex;flex-direction:column;gap:26px}
 .st-copy h2{font-size:clamp(56px,min(7.4vw,15svh),150px)}
 .nums{display:grid;grid-template-columns:repeat(3,1fr);margin-top:14px}
@@ -159,7 +162,7 @@ a:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
 .cta{padding:clamp(80px,12vw,180px) var(--pad) clamp(70px,9vw,150px);display:flex;flex-direction:column;align-items:center;gap:34px;text-align:center}
 .cta h2{font-size:clamp(80px,min(18vw,30svh),360px)}
 /* кнопка-ягода: сама сублимированная малина, текст на ней */
-.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:clamp(170px,17vw,240px);aspect-ratio:1;color:#fff;font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;text-align:center;line-height:1.5;margin-top:-4vw;will-change:transform}
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:clamp(170px,17vw,240px);aspect-ratio:1;color:#fff;font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;text-align:center;line-height:1.5;margin-top:clamp(10px,2vh,24px);will-change:transform}
 .btn::before{content:"";position:absolute;left:14%;right:14%;bottom:-6%;height:14%;border-radius:50%;background:radial-gradient(closest-side,rgba(120,10,45,.32),transparent);filter:blur(8px);transition:transform .7s var(--ease),opacity .7s}
 .btn-berry{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;animation:bob 5s ease-in-out infinite;transition:transform .8s var(--ease),filter .8s}
 .btn span{position:relative;z-index:1;max-width:9ch;font-size:12.5px;pointer-events:none;text-shadow:0 1px 2px rgba(90,0,30,.8)}
@@ -196,7 +199,8 @@ footer{padding:26px var(--pad) 32px;display:flex;justify-content:space-between;g
   .names button{font-size:28px;white-space:nowrap}
   .names button i{display:none}
   .names button.on{transform:none}
-  .vitrine{order:1;max-height:none;margin-bottom:40px}
+  .vitrine{order:1;margin-bottom:28px}
+  .vimg{width:100%}
   .structure,.plant{grid-template-columns:1fr}
   .formats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:34px}
   .facts{grid-template-columns:1fr}
