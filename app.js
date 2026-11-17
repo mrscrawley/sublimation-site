@@ -193,18 +193,31 @@ if (!reduce) {
 
 /* структура */
 if (!reduce) {
-  /* разлом по прокрутке: целая ягода -> трещина -> половинки расходятся (отрезок вдоль нормали к линии разлома) */
-  const sw = document.querySelector('.st-whole'), ha = document.querySelector('.st-half.a'), hb = document.querySelector('.st-half.b');
-  ScrollTrigger.create({ trigger: '.st-media', start: 'center 85%', end: 'center 35%', scrub: .6, onUpdate: s => {
-    const p = s.progress, open = gsap.parseEase('power2.out')(Math.max(0, (p - .42) / .58));
-    const crack = p < .38 ? 0 : 1;
-    sw.style.opacity = 1 - Math.min(1, Math.max(0, (p - .36) / .06));
-    sw.style.transform = `rotate(${(-4 + p * 6).toFixed(2)}deg) scale(${(.9 - .02 * Math.sin(Math.min(p / .4, 1) * Math.PI)).toFixed(3)})`;
-    [ha, hb].forEach(e => e.style.opacity = crack ? Math.min(1, (p - .36) / .06) : 0);
-    const d = 1 - open * 1.45; /* 1 = сомкнуты, 0 = как на фото, меньше 0 = расходятся шире */
-    ha.style.transform = `translate(${(5.6 * d).toFixed(2)}%, ${(4.2 * d).toFixed(2)}%) rotate(${(4 * d).toFixed(2)}deg)`;
-    hb.style.transform = `translate(${(-5.6 * d).toFixed(2)}%, ${(-4.2 * d).toFixed(2)}%) rotate(${(-4 * d).toFixed(2)}deg)`;
+  /* разлом по прокрутке: настоящий ролик в замедлении, кадры листаются скроллом */
+  const B = window.BRK || { n: 0 }, bc = document.getElementById('brk'), bx = bc.getContext('2d'), bf = [];
+  const bsrc = i => `media/break/k${String(i + 1).padStart(4, '0')}.jpg`;
+  const bload = i => { if (bf[i] || i < 0 || i >= B.n) return; const im = new Image(); im.decoding = 'async'; im.src = bsrc(i); bf[i] = im; im.onload = () => { im.ok = true; if (bShown < 0) bDraw(bLast); }; };
+  [6, 3, 1].forEach((st, k) => setTimeout(() => { for (let i = 0; i < B.n; i += st) bload(i); }, 300 + k * 400));
+  let bShown = -1, bLast = 0;
+  function bDraw(i) {
+    bLast = i; let im = bf[i];
+    if (!im || !im.ok) { for (let d = 1; d < 12; d++) { im = bf[i - d]; if (im && im.ok) break; im = bf[i + d]; if (im && im.ok) break; } }
+    if (!im || !im.ok) return;
+    const d = Math.min(1.5, devicePixelRatio || 1), W = Math.round(bc.clientWidth * d), H = Math.round(bc.clientHeight * d);
+    if (bc.width !== W || bc.height !== H) { bc.width = W; bc.height = H; }
+    bx.globalCompositeOperation = 'source-over'; bx.clearRect(0, 0, W, H); bx.drawImage(im, 0, 0, W, H);
+    /* фон ролика совпадает со страницей; края всё равно растворяем по прозрачности */
+    bx.globalCompositeOperation = 'destination-in';
+    const g = bx.createRadialGradient(W / 2, H / 2, W * .32, W / 2, H / 2, W * .5);
+    g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    bx.fillStyle = g; bx.fillRect(0, 0, W, H); bShown = i;
+  }
+  ScrollTrigger.create({ trigger: '.st-media', start: 'center 90%', end: 'center 30%', scrub: .5, onUpdate: s => {
+    /* первые 15% — ягода целая, дальше трещина и разлом в темпе прокрутки */
+    const p = Math.max(0, (s.progress - .15) / .85), i = Math.min(B.n - 1, Math.round(p * (B.n - 1)));
+    if (i !== bShown) bDraw(i);
   } });
+  addEventListener('resize', () => { bShown = -1; bDraw(bLast); });
   gsap.from('.lead', { opacity: 0, y: 30, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.lead', start: 'top 88%' } });
   document.querySelectorAll('[data-count]').forEach(n => {
     const to = +n.dataset.count, pre = n.dataset.prefix || '', suf = n.dataset.suffix || '', o = { v: 0 };

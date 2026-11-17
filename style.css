@@ -124,8 +124,7 @@ a:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
 .st-media{position:relative;aspect-ratio:1;max-height:84svh;width:100%;margin-inline:auto}
 .st-media::before{content:"";position:absolute;inset:-12%;border-radius:50%;background:radial-gradient(closest-side,rgba(247,190,200,.75),rgba(247,190,200,.3) 50%,transparent);filter:blur(10px)}
 .st-inner{position:absolute;inset:0;animation:levit 7s ease-in-out infinite}
-.st-inner img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 50px 50px rgba(110,20,45,.2));will-change:transform,opacity}
-.st-half{opacity:0}
+.st-inner canvas{position:absolute;inset:-6%;width:112%;height:112%;display:block}
 .st-copy{display:flex;flex-direction:column;gap:26px}
 .st-copy h2{font-size:clamp(56px,min(7.4vw,15svh),150px)}
 .nums{display:grid;grid-template-columns:repeat(3,1fr);margin-top:14px}
@@ -141,7 +140,7 @@ a:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
 .formats{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(8px,2vw,32px);padding:0 var(--pad)}
 .formats::before{content:"";position:absolute;left:5%;right:5%;top:2%;height:70%;border-radius:50%;background:radial-gradient(closest-side,rgba(247,190,200,.6),rgba(247,190,200,.22) 55%,transparent);filter:blur(14px);z-index:-1}
 .fmt{margin:0;display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2vh,22px);text-align:center}
-.fmt-ph{width:100%;aspect-ratio:1;max-height:46svh;display:grid;place-items:center}
+.fmt-ph{width:100%;aspect-ratio:1;max-height:46svh;display:grid;place-items:center;padding:4% 6% 12%}
 .fmt-ph img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 34px 34px rgba(110,20,45,.18));animation:levit 6.5s ease-in-out infinite;transition:transform 1s var(--ease)}
 .fmt:nth-child(2) .fmt-ph img{animation-delay:-1.6s}.fmt:nth-child(3) .fmt-ph img{animation-delay:-3.2s}.fmt:nth-child(4) .fmt-ph img{animation-delay:-4.8s}
 .fmt:hover .fmt-ph img{transform:scale(1.07) rotate(-4deg)}
