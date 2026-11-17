@@ -69,11 +69,26 @@ function draw(p) {
   if (!im || !im.ok) { for (let d = 1; d < 24 && !(im && im.ok); d++) { im = frames[i - d]; if (im && im.ok) break; im = frames[i + d]; } }
   if (!im || !im.ok) return;
   lastDrawn = i;
-  const zoom = 1.02 + .05 * p, r = Math.max(W / im.naturalWidth, H / im.naturalHeight) * zoom;
-  const w = im.naturalWidth * r, h = im.naturalHeight * r;
-  /* на узком экране ягоду держим в верхней части кадра */
-  const oy = H > W ? (H * .36 - h * .5) : (H - h) / 2;
-  ctx.drawImage(im, (W - w) / 2, oy, w, h);
+  const iw = im.naturalWidth, ih = im.naturalHeight, zoom = 1 + .04 * p;
+  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+  if (H > W) {
+    /* телефон: ягоду держим в верхней части кадра */
+    const r = Math.max(W / iw, H / ih) * zoom, w = iw * r, h = ih * r;
+    ctx.drawImage(im, (W - w) / 2, H * .36 - h * .5, w, h);
+    return;
+  }
+  /* широкий экран: ягода целиком по высоте, сдвинута к центру между текстом и приборами */
+  const r = Math.max(H / ih, W / iw * .62) * zoom, w = iw * r, h = ih * r;
+  const x = (W - w) / 2 + (W > 1100 * (W / cv.clientWidth) ? W * .015 : 0), y = (H - h) / 2 + H * .03;
+  ctx.drawImage(im, x, y, w, h);
+  /* мягко растворяем края кадра в чёрном, если картинка уже экрана */
+  if (w < W) {
+    const f = Math.min(W * .14, w * .18);
+    let g = ctx.createLinearGradient(x, 0, x + f, 0); g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(x - 1, 0, f + 1, H);
+    g = ctx.createLinearGradient(x + w - f, 0, x + w, 0); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, '#000');
+    ctx.fillStyle = g; ctx.fillRect(x + w - f, 0, f + 1, H);
+  }
 }
 
 /* ключевые точки цикла: p, T °C, P мбар, влага % */
