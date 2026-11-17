@@ -46,6 +46,7 @@ document.querySelectorAll('.reveal').forEach(h => {
 const SEQ = window.SEQ || { n1: 0, n2: 0 };
 const TOTAL = SEQ.n1 + SEQ.n2;
 const cv = document.getElementById('seq'), ctx = cv.getContext('2d');
+const off = document.createElement('canvas'), octx = off.getContext('2d');
 const frames = new Array(TOTAL);
 const src = i => i < SEQ.n1 ? `media/seq/a${String(i + 1).padStart(4, '0')}.jpg` : `media/seq/b${String(i - SEQ.n1 + 1).padStart(4, '0')}.jpg`;
 function load(i) { if (frames[i] || i < 0 || i >= TOTAL) return; const im = new Image(); im.decoding = 'async'; im.src = src(i); frames[i] = im; im.onload = () => { im.ok = true; if (i === lastDrawn || lastDrawn < 0) dirty = true; }; }
@@ -73,22 +74,23 @@ function draw(p) {
   ctx.clearRect(0, 0, W, H);
   let r, x, y;
   if (H > W) {
-    /* телефон: поддон крупно, в верхней половине кадра */
-    r = (W * 1.5 / iw) * zoom; x = (W - iw * r) / 2; y = H * .4 - ih * r * .5;
+    /* телефон: облако фруктов крупно, в верхней части кадра */
+    r = (W * 1.55 / iw) * zoom; x = (W - iw * r) / 2; y = H * .38 - ih * r * .46;
   } else {
-    /* широкий экран: поддон в верхней части между текстом и приборами */
-    const w0 = Math.min(W * .7, H * 1.6);
-    r = (w0 / iw) * zoom; x = (W - iw * r) / 2 - W * .03; y = H * .42 - ih * r * .49;
+    /* широкий экран: облако над текстом стадий, левее приборов */
+    const h0 = Math.min(H * .7, W * .42);
+    r = (h0 / ih) * zoom; x = W * .42 - iw * r / 2; y = H * .33 - ih * r * .46;
   }
-  const w = iw * r, h = ih * r;
-  ctx.drawImage(im, x, y, w, h);
-  /* кадр тает в цвет страницы овальной виньеткой: ни рамки, ни серой подложки */
-  const cx = x + w / 2, cy = y + h * .49, BG = '247,242,240';
-  ctx.save(); ctx.translate(cx, cy); ctx.scale(1, H > W ? .36 : .52);
-  const g = ctx.createRadialGradient(0, 0, w * .3, 0, 0, w * .56);
-  g.addColorStop(0, `rgba(${BG},0)`); g.addColorStop(.55, `rgba(${BG},.35)`); g.addColorStop(1, `rgba(${BG},1)`);
-  ctx.fillStyle = g; ctx.fillRect(-W * 2, -H * 4, W * 4, H * 8);
-  ctx.restore();
+  const w = Math.round(iw * r), h = Math.round(ih * r);
+  /* кадр растворяется овальной маской по прозрачности: ни рамки, ни подложки, ни линии */
+  if (off.width !== w || off.height !== h) { off.width = w; off.height = h; }
+  octx.globalCompositeOperation = 'source-over'; octx.clearRect(0, 0, w, h); octx.drawImage(im, 0, 0, w, h);
+  octx.globalCompositeOperation = 'destination-in';
+  octx.save(); octx.translate(w / 2, h * .46); octx.scale(1, h / w * 1.25);
+  const g = octx.createRadialGradient(0, 0, w * .26, 0, 0, w * .5);
+  g.addColorStop(0, 'rgba(0,0,0,1)'); g.addColorStop(.6, 'rgba(0,0,0,.85)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  octx.fillStyle = g; octx.fillRect(-w, -h * 2, w * 2, h * 4); octx.restore();
+  ctx.drawImage(off, x, y);
 }
 
 /* ключевые точки цикла: p, T °C, P мбар, влага % */
