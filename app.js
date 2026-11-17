@@ -92,7 +92,7 @@ function draw(p) {
 }
 
 /* ключевые точки цикла: p, T °C, P мбар, влага % */
-const K = [[0, 4, 1013, 87], [.12, 4, 1013, 87], [.40, -40, 1013, 87], [.50, -40, .5, 87], [.68, -25, .5, 8], [.85, 35, .1, 3], [.93, 20, 1013, 3], [1, 20, 1013, 3]];
+const K = [[0, 4, 1013, 87], [.12, 4, 1013, 87], [.40, -40, 1013, 87], [.50, -40, .5, 87], [.68, -25, .5, 10], [.85, 35, .1, 5], [.93, 20, 1013, 5], [1, 20, 1013, 5]];
 function sample(p) {
   let i = 0; while (i < K.length - 2 && p > K[i + 1][0]) i++;
   const a = K[i], b = K[i + 1], t = clamp((p - a[0]) / (b[0] - a[0] || 1));
@@ -154,6 +154,9 @@ if (!reduce) {
     const to = +n.dataset.count, pre = n.dataset.prefix || '', suf = n.dataset.suffix || '', o = { v: 0 };
     gsap.to(o, { v: to, duration: 1.8, ease: 'power2.out', scrollTrigger: { trigger: n, start: 'top 90%' }, onUpdate: () => { n.textContent = pre + Math.round(o.v) + suf; } });
   });
+  /* производство */
+  gsap.fromTo('.plant-media img', { yPercent: -10 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.plant', start: 'top bottom', end: 'bottom top', scrub: true } });
+  gsap.from('.fact', { opacity: 0, y: 40, duration: 1, ease: 'power3.out', stagger: .12, scrollTrigger: { trigger: '.facts', start: 'top 85%' } });
   /* форматы */
   gsap.fromTo('.forms-media img', { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '.forms-media', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.from('.pin', { opacity: 0, y: 40, duration: 1, ease: 'power3.out', stagger: .18, scrollTrigger: { trigger: '.forms-media', start: 'top 55%' } });
