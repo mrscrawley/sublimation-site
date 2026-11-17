@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@200;300;400;600&family=Geologica:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
 <link rel="preload" as="image" href="media/hero-float.jpg">
-<link rel="stylesheet" href="style.css?v=24">
+<link rel="stylesheet" href="style.css?v=27">
 </head>
 <body>
 
@@ -151,7 +151,23 @@
 <section class="cta" id="contact">
   <p class="mono">Образцы и спецификация - по запросу</p>
   <h2 class="reveal"><span class="mask"><span>Пришлём</span></span><span class="mask"><span><em>образцы</em></span></span></h2>
-  <a class="btn" href="#top"><img class="btn-berry" src="media/berry.png" alt="" aria-hidden="true"><span>Оставить заявку</span></a>
+  <div class="cta-stage" id="ctaStage">
+    <button class="btn" type="button" id="berryBtn" aria-controls="rfq" aria-expanded="false"><img class="btn-berry" src="media/berry.png" alt="" aria-hidden="true"><span>Оставить заявку</span></button>
+    <form class="rfq" id="rfq" hidden novalidate>
+      <div class="rfq-head"><span class="mono">Заявка на образцы</span><button type="button" class="rfq-x" id="rfqClose" aria-label="Свернуть форму">&times;</button></div>
+      <div class="rfq-grid">
+        <div class="field"><label for="fCompany" class="mono">Компания</label><input id="fCompany" name="company" autocomplete="organization" required><small>Укажите компанию</small></div>
+        <div class="field"><label for="fName" class="mono">Контактное лицо</label><input id="fName" name="name" autocomplete="name"></div>
+        <div class="field"><label for="fContact" class="mono">Телефон или e-mail</label><input id="fContact" name="contact" autocomplete="tel" required><small>Оставьте телефон или почту</small></div>
+        <div class="field"><label for="fVolume" class="mono">Объём в месяц, кг</label><input id="fVolume" name="volume" inputmode="numeric" placeholder="например, 200"></div>
+      </div>
+      <div class="field"><span class="mono">Что интересует</span><div class="pick" id="pickFruit"></div></div>
+      <div class="field"><span class="mono">Формат</span><div class="pick" id="pickForm"></div></div>
+      <div class="field"><label for="fNote" class="mono">Комментарий</label><textarea id="fNote" name="note" rows="1" placeholder="Для какого продукта, требования к фракции"></textarea></div>
+      <div class="rfq-foot"><span class="mono">Ответим и согласуем образцы</span><button class="send" type="submit">Отправить заявку</button></div>
+    </form>
+    <div class="rfq-done" id="rfqDone" hidden><b>Заявка принята</b><p>Спасибо! Свяжемся с вами, чтобы уточнить объёмы и отправить образцы.</p></div>
+  </div>
 </section>
 
 <footer><span class="mono">Тройная точка - концепт сайта сублимационного производства</span><span class="mono">Изображения сгенерированы</span></footer>
@@ -161,6 +177,6 @@
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="media/seq.js?v=16"></script>
 <script src="media/brk.js?v=1"></script>
-<script src="app.js?v=24"></script>
+<script src="app.js?v=27"></script>
 </body>
 </html>

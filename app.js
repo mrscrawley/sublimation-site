@@ -229,7 +229,86 @@ if (!reduce) {
   gsap.from('.fmt', { opacity: 0, y: 70, scale: .9, duration: 1.2, ease: 'power3.out', stagger: .14, scrollTrigger: { trigger: '.formats', start: 'top 82%' } });
   /* магнитная кнопка */
   const btn = document.querySelector('.btn');
-  btn.addEventListener('mousemove', e => { const r = btn.getBoundingClientRect(); gsap.to(btn, { x: (e.clientX - r.left - r.width / 2) * .35, y: (e.clientY - r.top - r.height / 2) * .35, duration: .5, ease: 'power3.out' }); });
+  btn.addEventListener('mousemove', e => { if (btn.dataset.gone) return; const r = btn.getBoundingClientRect(); gsap.to(btn, { x: (e.clientX - r.left - r.width / 2) * .35, y: (e.clientY - r.top - r.height / 2) * .35, duration: .5, ease: 'power3.out' }); });
   btn.addEventListener('mouseleave', () => gsap.to(btn, { x: 0, y: 0, duration: .9, ease: 'elastic.out(1,.4)' }));
 }
+
+/* ───── заявка: ягода взрывается и становится формой ───── */
+(() => {
+  const btn = document.getElementById('berryBtn'), form = document.getElementById('rfq'), done = document.getElementById('rfqDone');
+  const FRUITS = ['Малина', 'Клубника', 'Ежевика', 'Вишня', 'Черника', 'Чёрная смородина', 'Красная смородина', 'Облепиха', 'Брусника', 'Клюква', 'Яблоко', 'Банан'];
+  const FORMS = ['Целые', 'Слайсы', 'Кусочки', 'Порошок'];
+  const chips = (el, list) => { el.innerHTML = list.map(x => `<button type="button" aria-pressed="false">${x}</button>`).join(''); el.addEventListener('click', e => { const b = e.target.closest('button'); if (b) b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true'); }); };
+  chips(document.getElementById('pickFruit'), FRUITS); chips(document.getElementById('pickForm'), FORMS);
+
+  /* частицы из пикселей самой ягоды + розовая пыль */
+  function burst(img) {
+    const r = img.getBoundingClientRect(), cv = document.createElement('canvas'), dpr = Math.min(2, devicePixelRatio || 1);
+    cv.className = 'burst'; cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; document.body.appendChild(cv);
+    const c = cv.getContext('2d'); c.scale(dpr, dpr);
+    const off = document.createElement('canvas'), w = Math.round(r.width), h = Math.round(r.height); off.width = w; off.height = h;
+    const o = off.getContext('2d'); o.drawImage(img, 0, 0, w, h);
+    let data = null; try { data = o.getImageData(0, 0, w, h).data; } catch (e) {}
+    const P = [], cx = w / 2, cy = h / 2, step = Math.max(4, Math.round(w / 46));
+    for (let y = 0; y < h; y += step) for (let x = 0; x < w; x += step) {
+      const k = (y * w + x) * 4; if (data && data[k + 3] < 140) continue;
+      if (!data && Math.hypot(x - cx, y - cy) > w * .45) continue;
+      const dx = x - cx, dy = y - cy, d = Math.hypot(dx, dy) || 1, sp = 5 + Math.random() * 11 + d / w * 10;
+      P.push({ x: r.left + x, y: r.top + y, vx: dx / d * sp + (Math.random() - .5) * 4, vy: dy / d * sp + (Math.random() - .5) * 4 - 2, s: step * (.6 + Math.random() * .8), rot: Math.random() * 6, vr: (Math.random() - .5) * .4, col: data ? `rgb(${data[k]},${data[k + 1]},${data[k + 2]})` : '#c8204f', dust: false });
+    }
+    for (let i = 0; i < 260; i++) { const a = Math.random() * Math.PI * 2, sp = 2 + Math.random() * 14; P.push({ x: r.left + cx, y: r.top + cy, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, s: 1 + Math.random() * 2.5, rot: 0, vr: 0, col: Math.random() < .5 ? '#ff8fb0' : '#e23a6e', dust: true }); }
+    const t0 = performance.now(), T = 1500;
+    (function frame(now) {
+      const t = (now - t0) / T; c.clearRect(0, 0, innerWidth, innerHeight);
+      /* вспышка-облачко пудры в первые доли секунды */
+      if (t < .5) { const g = c.createRadialGradient(r.left + cx, r.top + cy, 0, r.left + cx, r.top + cy, w * (.4 + t * 1.6)); g.addColorStop(0, `rgba(255,170,195,${.55 * (1 - t * 2)})`); g.addColorStop(1, 'rgba(255,170,195,0)'); c.fillStyle = g; c.fillRect(0, 0, innerWidth, innerHeight); }
+      for (const p of P) {
+        p.x += p.vx; p.y += p.vy; p.vx *= p.dust ? .93 : .955; p.vy = p.vy * (p.dust ? .93 : .955) + (p.dust ? .02 : .18); p.rot += p.vr;
+        const a = Math.max(0, 1 - Math.max(0, t - .35) / .65); if (!a) continue;
+        c.globalAlpha = a; c.fillStyle = p.col;
+        if (p.dust) { c.beginPath(); c.arc(p.x, p.y, p.s, 0, 7); c.fill(); }
+        else { c.save(); c.translate(p.x, p.y); c.rotate(p.rot); c.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * .8); c.restore(); }
+      }
+      c.globalAlpha = 1;
+      if (t < 1) requestAnimationFrame(frame); else cv.remove();
+    })(t0);
+  }
+
+  function openForm() {
+    if (btn.dataset.gone) return; btn.dataset.gone = '1'; btn.setAttribute('aria-expanded', 'true');
+    const img = btn.querySelector('.btn-berry'), br = btn.getBoundingClientRect();
+    if (!reduce) burst(img);
+    gsap.set(btn, { x: 0, y: 0 });
+    gsap.to(btn, { scale: 1.25, opacity: 0, duration: reduce ? 0 : .18, ease: 'power2.out' });
+    /* раскрытие формы не ждёт окончания анимации ягоды */
+    setTimeout(() => {
+      btn.style.display = 'none'; form.hidden = false;
+      /* форма вырастает из точки, где была ягода */
+      const fr = form.getBoundingClientRect();
+      form.style.transformOrigin = `${br.left + br.width / 2 - fr.left}px ${br.top + br.height / 2 - fr.top}px`;
+      if (!reduce) {
+        gsap.fromTo(form, { opacity: 0, scale: .35, filter: 'blur(14px)' }, { opacity: 1, scale: 1, filter: 'blur(0px)', duration: 1, ease: 'expo.out', delay: .12 });
+        gsap.fromTo(form.querySelectorAll('.rfq-head,.field,.rfq-foot'), { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .7, ease: 'power3.out', stagger: .05, delay: .35 });
+      }
+      setTimeout(() => document.getElementById('fCompany').focus({ preventScroll: true }), reduce ? 0 : 700);
+    }, reduce ? 0 : 170);
+  }
+  btn.addEventListener('click', openForm);
+  /* «Запросить образцы» в шапке ведёт к заявке и сразу раскрывает форму */
+  document.querySelectorAll('a[href="#contact"]').forEach(a => a.addEventListener('click', () => setTimeout(openForm, 1500)));
+
+  document.getElementById('rfqClose').addEventListener('click', () => {
+    form.hidden = true; btn.style.display = ''; delete btn.dataset.gone; btn.setAttribute('aria-expanded', 'false');
+    gsap.fromTo(btn, { scale: .6, opacity: 0 }, { scale: 1, opacity: 1, duration: .8, ease: 'back.out(1.6)' }); btn.focus({ preventScroll: true });
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault(); let ok = true;
+    ['fCompany', 'fContact'].forEach(id => { const el = document.getElementById(id), bad = !el.value.trim(); el.closest('.field').classList.toggle('err', bad); if (bad && ok) { ok = false; el.focus({ preventScroll: true }); } });
+    if (!ok) return;
+    /* концепт: заявка никуда не отправляется — показываем подтверждение */
+    gsap.to(form, { opacity: 0, scale: .96, duration: .35, ease: 'power2.in', onComplete: () => { form.hidden = true; done.hidden = false; if (!reduce) gsap.fromTo(done, { opacity: 0, scale: .9 }, { opacity: 1, scale: 1, duration: .8, ease: 'expo.out' }); } });
+  });
+  form.querySelectorAll('input').forEach(el => el.addEventListener('input', () => el.closest('.field').classList.remove('err')));
+})();
 })();
