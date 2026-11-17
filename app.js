@@ -83,7 +83,7 @@ function draw(p) {
   const w = iw * r, h = ih * r;
   ctx.drawImage(im, x, y, w, h);
   /* кадр тает в цвет страницы овальной виньеткой: ни рамки, ни серой подложки */
-  const cx = x + w / 2, cy = y + h * .49, BG = '242,245,248';
+  const cx = x + w / 2, cy = y + h * .49, BG = '247,242,240';
   ctx.save(); ctx.translate(cx, cy); ctx.scale(1, H > W ? .36 : .52);
   const g = ctx.createRadialGradient(0, 0, w * .3, 0, 0, w * .56);
   g.addColorStop(0, `rgba(${BG},0)`); g.addColorStop(.55, `rgba(${BG},.35)`); g.addColorStop(1, `rgba(${BG},1)`);
@@ -146,27 +146,52 @@ window.__setP = v => { target = cur = v; dirty = true; };
 
 /* ассортимент — по прайсу от 13.03.2026 */
 const RANGE = [
-  ['raspberry', 'Малина', ['целая', 'кусочки', 'порошок']],
-  ['strawberry', 'Клубника', ['целая', '1-5 мм', '5-10 мм', 'слайсы', 'порошок']],
-  ['blackberry', 'Ежевика', ['целая', '1-5 мм']],
-  ['cherry', 'Вишня', ['целая', '1-5 мм']],
-  ['blueberry', 'Черника', ['целая', 'порошок']],
-  ['blackcurrant', 'Чёрная смородина', ['целая', 'порошок']],
-  ['redcurrant', 'Красная смородина', ['целая']],
-  ['seabuckthorn', 'Облепиха', ['целая']],
-  ['lingonberry', 'Брусника', ['целая']],
-  ['cranberry', 'Клюква', ['целая']],
-  ['apple', 'Яблоко', ['кубик', '3-6 мм', 'порошок']],
-  ['banana', 'Банан', ['1-5 мм', 'слайсы', 'порошок']]
+  ['raspberry', 'Малина', ['целая', 'кусочки', 'порошок'], '#f4c3d1'],
+  ['strawberry', 'Клубника', ['целая', '1-5 мм', '5-10 мм', 'слайсы', 'порошок'], '#f7c6c0'],
+  ['blackberry', 'Ежевика', ['целая', '1-5 мм'], '#dccbe6'],
+  ['cherry', 'Вишня', ['целая', '1-5 мм'], '#efc0c7'],
+  ['blueberry', 'Черника', ['целая', 'порошок'], '#cfd6f0'],
+  ['blackcurrant', 'Чёрная смородина', ['целая', 'порошок'], '#d9c9e3'],
+  ['redcurrant', 'Красная смородина', ['целая'], '#f6c2c6'],
+  ['seabuckthorn', 'Облепиха', ['целая'], '#fbd8b6'],
+  ['lingonberry', 'Брусника', ['целая'], '#f2c1c9'],
+  ['cranberry', 'Клюква', ['целая'], '#f3bfc3'],
+  ['apple', 'Яблоко', ['кубик', '3-6 мм', 'порошок'], '#efe7cb'],
+  ['banana', 'Банан', ['1-5 мм', 'слайсы', 'порошок'], '#f6ebbf']
 ];
-document.getElementById('cards').innerHTML = RANGE.map(([k, n, f]) =>
-  `<article class="card"><div class="ph"><img src="media/prod/${k}.jpg" alt="${n}, сублимированная" loading="lazy"></div><h3>${n}</h3><div class="chips">${f.map(x => `<span>${x}</span>`).join('')}</div></article>`).join('');
-if (!reduce) gsap.from('.card', { opacity: 0, y: 50, duration: 1, ease: 'power3.out', stagger: { each: .06, grid: 'auto', from: 'start' }, scrollTrigger: { trigger: '#cards', start: 'top 85%' } });
+/* предзагрузка вырезок */
+RANGE.forEach(([k]) => { const i = new Image(); i.src = `media/float/${k}.png`; });
+const namesEl = document.getElementById('names'), vit = document.getElementById('vitrine');
+namesEl.innerHTML = RANGE.map(([k, n], i) => `<li><button type="button" data-i="${i}"><i>${String(i + 1).padStart(2, '0')}</i>${n}</button></li>`).join('');
+const btns = [...namesEl.querySelectorAll('button')], flyA = document.getElementById('flyA'), flyB = document.getElementById('flyB');
+let vCur = -1, front = flyA, back = flyB, userTook = false;
+function show(i) {
+  if (i === vCur) return; vCur = i;
+  const [k, n, f, tone] = RANGE[i];
+  back.src = `media/float/${k}.png`; back.alt = `${n}, сублимированная`;
+  back.classList.add('on'); front.classList.remove('on'); [front, back] = [back, front];
+  vit.style.setProperty('--tone', tone);
+  document.getElementById('vName').textContent = n;
+  document.getElementById('vChips').innerHTML = f.map(x => `<span>${x}</span>`).join('');
+  btns.forEach((b, j) => b.classList.toggle('on', j === i));
+}
+btns.forEach(b => { const i = +b.dataset.i; b.addEventListener('mouseenter', () => { userTook = true; show(i); }); b.addEventListener('click', () => { userTook = true; show(i); }); b.addEventListener('focus', () => show(i)); });
+show(0);
+/* сама листает, пока посетитель не выбрал позицию; только когда витрина на экране */
+let inView = false;
+ScrollTrigger.create({ trigger: '#showcase', start: 'top 80%', end: 'bottom 20%', onToggle: s => { inView = s.isActive; } });
+setInterval(() => { if (inView && !userTook && !reduce) show((vCur + 1) % RANGE.length); }, 3200);
+/* продукт парит и слегка следует за курсором */
+[flyA, flyB].forEach(el => el.classList.add('float'));
+if (!reduce) {
+  vit.addEventListener('mousemove', e => { const r = vit.getBoundingClientRect(); const dx = (e.clientX - r.left) / r.width - .5, dy = (e.clientY - r.top) / r.height - .5; gsap.to([flyA, flyB], { x: dx * 40, y: dy * 30, rotate: dx * 6, duration: 1.2, ease: 'power3.out', overwrite: 'auto' }); });
+  vit.addEventListener('mouseleave', () => gsap.to([flyA, flyB], { x: 0, y: 0, rotate: 0, duration: 1.6, ease: 'power3.out' }));
+  gsap.from('.names li', { opacity: 0, x: -30, duration: .9, ease: 'power3.out', stagger: .04, scrollTrigger: { trigger: '#showcase', start: 'top 80%' } });
+}
 
 /* структура */
 if (!reduce) {
-  gsap.to('.st-media', { clipPath: 'inset(0% 0% 0% 0% round 22px)', ease: 'none', scrollTrigger: { trigger: '.structure', start: 'top 85%', end: 'top 20%', scrub: true } });
-  gsap.fromTo('.st-media img', { yPercent: -14 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.structure', start: 'top bottom', end: 'bottom top', scrub: true } });
+  gsap.fromTo('.st-media', { yPercent: 10, rotate: -6, scale: .9 }, { yPercent: -6, rotate: 4, scale: 1, ease: 'none', scrollTrigger: { trigger: '.structure', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.from('.lead', { opacity: 0, y: 30, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.lead', start: 'top 88%' } });
   document.querySelectorAll('[data-count]').forEach(n => {
     const to = +n.dataset.count, pre = n.dataset.prefix || '', suf = n.dataset.suffix || '', o = { v: 0 };

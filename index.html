@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@200;300;400;600&family=Geologica:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="preload" as="image" href="media/hero-frost.jpg">
-<link rel="stylesheet" href="style.css?v=10">
+<link rel="preload" as="image" href="media/hero-float.jpg">
+<link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -22,7 +22,7 @@
 
 <section class="hero" id="top">
   <div class="hero-media">
-    <video id="heroVideo" muted playsinline loop autoplay poster="media/hero-frost.jpg"><source src="media/hero-frost.mp4" type="video/mp4"></video>
+    <video id="heroVideo" muted playsinline loop autoplay poster="media/hero-float.jpg"><source src="media/hero-float.mp4" type="video/mp4"></video>
   </div>
   <div class="hero-shade"></div>
   <div class="hero-meta mono"><span>Сублимационное производство · Елец</span><span>12 видов фруктов и ягод</span></div>
@@ -94,12 +94,20 @@
     <h2 class="reveal"><span class="mask"><span>Двенадцать</span></span><span class="mask"><span><em>вкусов</em> в работе</span></span></h2>
     <p class="lead">Ягоды и фрукты целиком, кусочками нужной фракции, слайсами и порошком. Формат подбираем под вашу линию.</p>
   </div>
-  <div class="cards" id="cards"></div>
+  <div class="showcase" id="showcase">
+    <ol class="names" id="names"></ol>
+    <div class="vitrine" id="vitrine">
+      <div class="aura" id="aura"></div>
+      <img class="fly a on" id="flyA" alt="">
+      <img class="fly b" id="flyB" alt="">
+      <div class="vmeta"><b id="vName">Малина</b><div class="chips" id="vChips"></div></div>
+    </div>
+  </div>
   <p class="pack mono">Поставка - в вакуумных барьерных пакетах по 2,5 кг, в коробах</p>
 </section>
 
 <section class="structure" id="structure">
-  <div class="st-media"><img src="media/l-cut.jpg" alt="Сублимированная клубника в разломе: сухая пористая структура" loading="lazy"></div>
+  <div class="st-media"><img src="media/cut-float.png" alt="Сублимированная клубника в разломе: сухая пористая структура" loading="lazy"></div>
   <div class="st-copy">
     <p class="mono">Структура</p>
     <h2 class="reveal"><span class="mask"><span>Вода ушла.</span></span><span class="mask"><span><em>Каркас</em> остался.</span></span></h2>
@@ -151,6 +159,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="media/seq.js?v=7"></script>
-<script src="app.js?v=7"></script>
+<script src="app.js?v=11"></script>
 </body>
 </html>
