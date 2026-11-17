@@ -7,29 +7,31 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@200;300;400;600&family=Geologica:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="preload" as="image" href="media/d-chamber.jpg">
-<link rel="stylesheet" href="style.css?v=6">
+<link rel="preload" as="image" href="media/l-hero.jpg">
+<link rel="stylesheet" href="style.css?v=7">
 </head>
 <body>
 
+<div class="atmo" aria-hidden="true"></div>
+
 <header class="nav" id="nav">
   <a class="logo" href="#top"><span>Тройная</span><i></i><span>точка</span></a>
-  <nav><a href="#process">Процесс</a><a href="#plant">Производство</a><a href="#forms">Форматы</a></nav>
+  <nav><a href="#process">Процесс</a><a href="#range">Ассортимент</a><a href="#plant">Производство</a></nav>
   <a class="nav-cta" href="#contact"><span class="hide-m">Запросить </span>образцы</a>
 </header>
 
 <section class="hero" id="top">
   <div class="hero-media">
-    <video id="heroVideo" muted playsinline loop autoplay poster="media/d-chamber.jpg"><source src="media/hero.mp4" type="video/mp4"></video>
+    <video id="heroVideo" muted playsinline loop autoplay poster="media/l-hero.jpg"><source src="media/hero.mp4" type="video/mp4"></video>
   </div>
   <div class="hero-shade"></div>
-  <div class="hero-meta mono"><span>Сублимационное производство · Елец</span><span>Фрукты · ягоды · с 2022 года</span></div>
+  <div class="hero-meta mono"><span>Сублимационное производство · Елец</span><span>12 видов фруктов и ягод</span></div>
   <h1 class="hero-title">
     <span class="mask"><span>Лёд уходит.</span></span>
-    <span class="mask"><span><em>Ягода</em> остаётся.</span></span>
+    <span class="mask"><span><em>Вкус</em> остаётся.</span></span>
   </h1>
   <div class="hero-foot">
-    <p>Сублимированные фрукты и ягоды для пищевых производств: целые, резаные, дроблёные и в порошке. Сушим, фасуем и упаковываем в чистом помещении в Ельце.</p>
+    <p>Сублимированные фрукты и ягоды для пищевых производств: целые, кусочки, слайсы и порошок. Сушим, фасуем и упаковываем в чистом помещении в Ельце.</p>
     <a class="scroll-cue mono" href="#process"><i></i>Смотреть процесс</a>
   </div>
 </section>
@@ -41,14 +43,13 @@
 
 <section class="process" id="process">
   <div class="stage" id="stage">
-    <canvas id="seq" aria-label="Малина в камере сублимации: вид меняется по стадиям процесса" role="img"></canvas>
+    <canvas id="seq" aria-label="Поддон с фруктами и ягодами в камере сублимации: вид меняется по стадиям процесса" role="img"></canvas>
     <div class="stage-shade"></div>
 
     <div class="hud">
       <div class="g" id="gT"><span class="mono">Температура</span><span class="v"><b id="vT">+4</b><small>°C</small></span></div>
       <div class="g" id="gP"><span class="mono">Давление</span><span class="v"><b id="vP">1013</b><small>мбар</small></span></div>
       <div class="g" id="gM"><span class="mono">Влага</span><span class="v"><b id="vM">87</b><small>%</small></span></div>
-      <div class="g" id="gW"><span class="mono">Масса</span><span class="v"><b id="vW">100</b><small>г</small></span></div>
       <div class="phase">
         <svg id="pd" viewBox="0 0 260 176" role="img" aria-label="Фазовая диаграмма воды с траекторией партии"></svg>
         <span class="mono">Фазовая диаграмма воды</span>
@@ -58,18 +59,18 @@
     <div class="copy">
       <article class="scene on">
         <span class="no">01</span>
-        <h3>Зрелая ягода</h3>
-        <p>Фрукты и ягоды готовим к сушке целыми, резаными или дроблёными. Свежая малина почти на 87 % состоит из воды.</p>
+        <h3>Сырьё</h3>
+        <p>Ягоды и фрукты готовим к сушке целыми, кусочками или слайсами. Свежие ягоды больше чем на 80 % состоят из воды.</p>
       </article>
       <article class="scene">
         <span class="no">02</span>
         <h3>Вода становится льдом</h3>
-        <p>Глубокая заморозка. Вода в клетках превращается в лёд, и ягода фиксирует свою форму.</p>
+        <p>Глубокая заморозка. Вода в клетках превращается в лёд, и каждая ягода фиксирует свою форму.</p>
       </article>
       <article class="scene">
         <span class="no">03</span>
         <h3>Лёд уходит в пар</h3>
-        <p>Вакуум ниже тройной точки воды. Лёд испаряется, минуя жидкую фазу: ягода не варится и не оседает.</p>
+        <p>Вакуум ниже тройной точки воды. Лёд испаряется, минуя жидкую фазу: продукт не варится и не оседает.</p>
       </article>
       <article class="scene">
         <span class="no">04</span>
@@ -78,8 +79,8 @@
       </article>
       <article class="scene">
         <span class="no">05</span>
-        <h3>Та же ягода, в семь раз легче</h3>
-        <p>Из 100 г свежей малины - около 14 г сухой. Цвет, аромат и форма на месте. Дальше - фасовка в том же чистом помещении.</p>
+        <h3>Форма, цвет и вкус на месте</h3>
+        <p>Продукт стал в несколько раз легче и хранится без холода. Дальше - фасовка в том же чистом помещении.</p>
       </article>
     </div>
 
@@ -87,22 +88,45 @@
   </div>
 </section>
 
+<section class="range" id="range">
+  <div class="range-head">
+    <p class="mono">Ассортимент</p>
+    <h2 class="reveal"><span class="mask"><span>Двенадцать</span></span><span class="mask"><span><em>вкусов</em> в работе</span></span></h2>
+    <p class="lead">Ягоды и фрукты целиком, кусочками нужной фракции, слайсами и порошком. Формат подбираем под вашу линию.</p>
+  </div>
+  <div class="cards" id="cards"></div>
+  <p class="pack mono">Поставка - в двухслойных прозрачных пакетах по 2,5 кг, в коробах</p>
+</section>
+
 <section class="structure" id="structure">
-  <div class="st-media"><img src="media/f-cut.jpg" alt="Сублимированная малина в разломе: сухая пористая структура" loading="lazy"></div>
+  <div class="st-media"><img src="media/l-cut.jpg" alt="Сублимированная клубника в разломе: сухая пористая структура" loading="lazy"></div>
   <div class="st-copy">
     <p class="mono">Структура</p>
     <h2 class="reveal"><span class="mask"><span>Вода ушла.</span></span><span class="mask"><span><em>Каркас</em> остался.</span></span></h2>
     <p class="lead">На месте льда остаются поры. Поэтому ягода хрустит, не слёживается в сухих смесях и за минуты возвращает вкус в креме, йогурте или воде.</p>
     <div class="nums">
-      <div><b><span data-count="7" data-prefix="×">×7</span></b><span class="mono">легче свежей</span></div>
       <div><b><span data-count="5" data-prefix="≤">≤5</span><small>%</small></b><span class="mono">влажность</span></div>
       <div><b>+20<small>°C</small></b><span class="mono">хранение, не выше</span></div>
+      <div><b>2,5<small>кг</small></b><span class="mono">пакет</span></div>
     </div>
   </div>
 </section>
 
+<section class="forms" id="forms">
+  <div class="forms-head">
+    <p class="mono">Форматы</p>
+    <h2 class="reveal"><span class="mask"><span>Под вашу <em>линию</em></span></span></h2>
+  </div>
+  <div class="forms-media">
+    <img src="media/l-forms.jpg" alt="Форматы сублимированной клубники: целая, слайсы, кусочки и порошок" loading="lazy">
+    <div class="pin" style="--x:15%"><i></i><b>Целые</b><span>декор, шоколад</span></div>
+    <div class="pin" style="--x:38%"><i></i><b>Слайсы</b><span>мюсли, топпинги</span></div>
+    <div class="pin" style="--x:61%"><i></i><b>Кусочки</b><span>1-5 · 3-6 · 5-10 мм</span></div>
+    <div class="pin" style="--x:85%"><i></i><b>Порошок</b><span>напитки, кремы, глазури</span></div>
+  </div>
+</section>
+
 <section class="plant" id="plant">
-  <div class="plant-media"><img src="media/d-chamber.jpg" alt="Камера сублимационной сушки с поддонами замороженной малины" loading="lazy"></div>
   <div class="plant-head">
     <p class="mono">Производство</p>
     <h2 class="reveal"><span class="mask"><span>Елец,</span></span><span class="mask"><span><em>Липецкая</em> область</span></span></h2>
@@ -115,31 +139,18 @@
   </div>
 </section>
 
-<section class="forms" id="forms">
-  <div class="forms-head">
-    <p class="mono">Форматы</p>
-    <h2 class="reveal"><span class="mask"><span>Под вашу <em>линию</em></span></span></h2>
-  </div>
-  <div class="forms-media">
-    <img src="media/e-forms.jpg" alt="Форматы сублимированной малины: целые ягоды, дроблёные кусочки и порошок" loading="lazy">
-    <div class="pin" style="--x:21%"><i></i><b>Целые</b><span>декор, мюсли, шоколад</span></div>
-    <div class="pin" style="--x:50%"><i></i><b>Резаные и дроблёные</b><span>батончики, начинки, выпечка</span></div>
-    <div class="pin" style="--x:79%"><i></i><b>Порошок</b><span>напитки, кремы, глазури</span></div>
-  </div>
-</section>
-
 <section class="cta" id="contact">
   <p class="mono">Образцы и спецификация - по запросу</p>
   <h2 class="reveal"><span class="mask"><span>Пришлём</span></span><span class="mask"><span><em>образцы</em></span></span></h2>
   <a class="btn" href="#top"><span>Оставить заявку</span></a>
 </section>
 
-<footer><span class="mono">Концепт сайта сублимационного производства ТТ-Фудпак</span><span class="mono">Название рабочее · изображения сгенерированы</span></footer>
+<footer><span class="mono">Тройная точка - концепт сайта сублимационного производства</span><span class="mono">Изображения сгенерированы</span></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
-<script src="media/seq.js?v=3"></script>
-<script src="app.js?v=5"></script>
+<script src="media/seq.js?v=7"></script>
+<script src="app.js?v=7"></script>
 </body>
 </html>

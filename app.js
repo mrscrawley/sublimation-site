@@ -70,25 +70,25 @@ function draw(p) {
   if (!im || !im.ok) return;
   lastDrawn = i;
   const iw = im.naturalWidth, ih = im.naturalHeight, zoom = 1 + .04 * p;
-  ctx.fillStyle = '#000'; ctx.fillRect(0, 0, W, H);
+  ctx.clearRect(0, 0, W, H);
+  let r, x, y;
   if (H > W) {
-    /* телефон: ягоду держим в верхней части кадра */
-    const r = Math.max(W / iw, H / ih) * zoom, w = iw * r, h = ih * r;
-    ctx.drawImage(im, (W - w) / 2, H * .36 - h * .5, w, h);
-    return;
+    /* телефон: поддон крупно, в верхней половине кадра */
+    r = (W * 1.5 / iw) * zoom; x = (W - iw * r) / 2; y = H * .4 - ih * r * .5;
+  } else {
+    /* широкий экран: поддон в верхней части между текстом и приборами */
+    const w0 = Math.min(W * .7, H * 1.6);
+    r = (w0 / iw) * zoom; x = (W - iw * r) / 2 - W * .03; y = H * .42 - ih * r * .49;
   }
-  /* широкий экран: ягода целиком по высоте, сдвинута к центру между текстом и приборами */
-  const r = Math.max(H / ih, W / iw * .62) * zoom, w = iw * r, h = ih * r;
-  const x = (W - w) / 2 + (W > 1100 * (W / cv.clientWidth) ? W * .015 : 0), y = (H - h) / 2 + H * .03;
+  const w = iw * r, h = ih * r;
   ctx.drawImage(im, x, y, w, h);
-  /* мягко растворяем края кадра в чёрном, если картинка уже экрана */
-  if (w < W) {
-    const f = Math.min(W * .14, w * .18);
-    let g = ctx.createLinearGradient(x, 0, x + f, 0); g.addColorStop(0, '#000'); g.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = g; ctx.fillRect(x - 1, 0, f + 1, H);
-    g = ctx.createLinearGradient(x + w - f, 0, x + w, 0); g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, '#000');
-    ctx.fillStyle = g; ctx.fillRect(x + w - f, 0, f + 1, H);
-  }
+  /* кадр тает в цвет страницы овальной виньеткой: ни рамки, ни серой подложки */
+  const cx = x + w / 2, cy = y + h * .49, BG = '242,245,248';
+  ctx.save(); ctx.translate(cx, cy); ctx.scale(1, H > W ? .36 : .52);
+  const g = ctx.createRadialGradient(0, 0, w * .3, 0, 0, w * .56);
+  g.addColorStop(0, `rgba(${BG},0)`); g.addColorStop(.55, `rgba(${BG},.35)`); g.addColorStop(1, `rgba(${BG},1)`);
+  ctx.fillStyle = g; ctx.fillRect(-W * 2, -H * 4, W * 4, H * 8);
+  ctx.restore();
 }
 
 /* ключевые точки цикла: p, T °C, P мбар, влага % */
@@ -106,16 +106,16 @@ const X = T => 30 + (T + 60) / 120 * 222, Y = P => 156 - (Math.log10(P) - Math.l
 const sub = [[-48, .05], [-40, .128], [-30, .38], [-20, 1.03], [-10, 2.6], [0, 6.11]], vap = [[0, 6.11], [10, 12.3], [20, 23.4], [30, 42.4], [40, 73.8], [50, 123], [60, 199]];
 const path = a => a.map((q, i) => (i ? 'L' : 'M') + X(q[0]).toFixed(1) + ' ' + Y(q[1]).toFixed(1)).join('');
 const el = (n, at, txt) => { const e = document.createElementNS(NS, n); for (const k in at) e.setAttribute(k, at[k]); if (txt) e.textContent = txt; pd.appendChild(e); return e; };
-el('path', { d: 'M30 8V156H254', fill: 'none', stroke: 'rgba(232,239,246,.25)' });
-el('path', { d: path(sub), fill: 'none', stroke: '#9ad4ff', 'stroke-width': 1.2 });
-el('path', { d: path(vap), fill: 'none', stroke: 'rgba(232,239,246,.55)', 'stroke-width': 1.2 });
-el('path', { d: `M${X(0)} ${Y(6.11)}V${Y(2000)}`, fill: 'none', stroke: 'rgba(232,239,246,.55)', 'stroke-width': 1.2 });
-el('circle', { cx: X(0), cy: Y(6.11), r: 2.4, fill: '#e8eff6' });
+el('path', { d: 'M30 8V156H254', fill: 'none', stroke: 'rgba(14,23,35,.2)' });
+el('path', { d: path(sub), fill: 'none', stroke: '#2a6fae', 'stroke-width': 1.2 });
+el('path', { d: path(vap), fill: 'none', stroke: 'rgba(14,23,35,.45)', 'stroke-width': 1.2 });
+el('path', { d: `M${X(0)} ${Y(6.11)}V${Y(2000)}`, fill: 'none', stroke: 'rgba(14,23,35,.45)', 'stroke-width': 1.2 });
+el('circle', { cx: X(0), cy: Y(6.11), r: 2.4, fill: '#0e1723' });
 el('text', { x: X(0) + 6, y: Y(6.11) + 11 }, 'ТРОЙНАЯ ТОЧКА');
 el('text', { x: X(-46), y: Y(120) }, 'ЛЁД'); el('text', { x: X(24), y: Y(500) }, 'ВОДА'); el('text', { x: X(-16), y: Y(.09) }, 'ПАР');
 el('text', { x: 30, y: 170 }, '−60 °C'); el('text', { x: 224, y: 170 }, '+60 °C');
-const trail = el('path', { d: '', fill: 'none', stroke: '#ff3d77', 'stroke-width': 1.6, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
-const dot = el('circle', { r: 4, fill: '#ff3d77', stroke: '#05080d', 'stroke-width': 1.5 });
+const trail = el('path', { d: '', fill: 'none', stroke: '#d4245e', 'stroke-width': 1.6, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' });
+const dot = el('circle', { r: 4, fill: '#d4245e', stroke: '#ffffff', 'stroke-width': 1.5 });
 function drawTrail(p) {
   let d = ''; const n = Math.max(2, Math.round(p * 90));
   for (let i = 0; i <= n; i++) { const s = sample(p * i / n); d += (i ? 'L' : 'M') + X(s.T).toFixed(1) + ' ' + Y(s.P).toFixed(1); }
@@ -129,9 +129,8 @@ function ui(p) {
   $('vT').textContent = (s.T > .5 ? '+' : s.T < -.5 ? '−' : '') + Math.abs(Math.round(s.T));
   $('vP').textContent = s.P >= 10 ? Math.round(s.P) : s.P.toFixed(s.P < 1 ? 2 : 1).replace('.', ',');
   $('vM').textContent = Math.round(s.M);
-  $('vW').textContent = (13 / (1 - s.M / 100)).toFixed(s.M < 50 ? 1 : 0).replace('.', ',');
   $('gT').classList.toggle('hot', idx === 1 || idx === 3); $('gP').classList.toggle('hot', idx === 2);
-  $('gM').classList.toggle('hot', idx === 2 || idx === 3); $('gW').classList.toggle('hot', idx === 4);
+  $('gM').classList.toggle('hot', idx >= 2);
   $('rail').style.setProperty('--p', p);
   drawTrail(p);
   if (idx !== active) { active = idx; scenes.forEach((e, i) => e.classList.toggle('on', i === idx)); rail.forEach((e, i) => { e.classList.toggle('on', i <= idx); e.classList.toggle('cur', i === idx); }); }
@@ -145,9 +144,28 @@ gsap.ticker.add(() => {
 });
 window.__setP = v => { target = cur = v; dirty = true; };
 
+/* ассортимент — по прайсу от 13.03.2026 */
+const RANGE = [
+  ['raspberry', 'Малина', ['целая', 'кусочки', 'порошок']],
+  ['strawberry', 'Клубника', ['целая', '1-5 мм', '5-10 мм', 'слайсы', 'порошок']],
+  ['blackberry', 'Ежевика', ['целая', '1-5 мм']],
+  ['cherry', 'Вишня', ['целая', '1-5 мм']],
+  ['blueberry', 'Черника', ['целая', 'порошок']],
+  ['blackcurrant', 'Чёрная смородина', ['целая', 'порошок']],
+  ['redcurrant', 'Красная смородина', ['целая']],
+  ['seabuckthorn', 'Облепиха', ['целая']],
+  ['lingonberry', 'Брусника', ['целая']],
+  ['cranberry', 'Клюква', ['целая']],
+  ['apple', 'Яблоко', ['кубик', '3-6 мм', 'порошок']],
+  ['banana', 'Банан', ['1-5 мм', 'слайсы', 'порошок']]
+];
+document.getElementById('cards').innerHTML = RANGE.map(([k, n, f]) =>
+  `<article class="card"><div class="ph"><img src="media/prod/${k}.jpg" alt="${n}, сублимированная" loading="lazy"></div><h3>${n}</h3><div class="chips">${f.map(x => `<span>${x}</span>`).join('')}</div></article>`).join('');
+if (!reduce) gsap.from('.card', { opacity: 0, y: 50, duration: 1, ease: 'power3.out', stagger: { each: .06, grid: 'auto', from: 'start' }, scrollTrigger: { trigger: '#cards', start: 'top 85%' } });
+
 /* структура */
 if (!reduce) {
-  gsap.to('.st-media', { clipPath: 'inset(0% 0% 0% 0% round 6px)', ease: 'none', scrollTrigger: { trigger: '.structure', start: 'top 85%', end: 'top 20%', scrub: true } });
+  gsap.to('.st-media', { clipPath: 'inset(0% 0% 0% 0% round 22px)', ease: 'none', scrollTrigger: { trigger: '.structure', start: 'top 85%', end: 'top 20%', scrub: true } });
   gsap.fromTo('.st-media img', { yPercent: -14 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.structure', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.from('.lead', { opacity: 0, y: 30, duration: 1, ease: 'power3.out', scrollTrigger: { trigger: '.lead', start: 'top 88%' } });
   document.querySelectorAll('[data-count]').forEach(n => {
@@ -155,7 +173,6 @@ if (!reduce) {
     gsap.to(o, { v: to, duration: 1.8, ease: 'power2.out', scrollTrigger: { trigger: n, start: 'top 90%' }, onUpdate: () => { n.textContent = pre + Math.round(o.v) + suf; } });
   });
   /* производство */
-  gsap.fromTo('.plant-media img', { yPercent: -10 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: '.plant', start: 'top bottom', end: 'bottom top', scrub: true } });
   gsap.from('.fact', { opacity: 0, y: 40, duration: 1, ease: 'power3.out', stagger: .12, scrollTrigger: { trigger: '.facts', start: 'top 85%' } });
   /* форматы */
   gsap.fromTo('.forms-media img', { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '.forms-media', start: 'top bottom', end: 'bottom top', scrub: true } });
