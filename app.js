@@ -200,9 +200,7 @@ if (!reduce) {
   /* производство */
   gsap.from('.fact', { opacity: 0, y: 40, duration: 1, ease: 'power3.out', stagger: .12, scrollTrigger: { trigger: '.facts', start: 'top 85%' } });
   /* форматы */
-  gsap.fromTo('.forms-media img', { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '.forms-media', start: 'top bottom', end: 'bottom top', scrub: true } });
-  gsap.from('.pin', { opacity: 0, y: 40, duration: 1, ease: 'power3.out', stagger: .18, scrollTrigger: { trigger: '.forms-media', start: 'top 55%' } });
-  gsap.from('.pin i', { scaleY: 0, duration: 1.2, ease: 'power3.out', stagger: .18, scrollTrigger: { trigger: '.forms-media', start: 'top 55%' } });
+  gsap.from('.fmt', { opacity: 0, y: 70, scale: .9, duration: 1.2, ease: 'power3.out', stagger: .14, scrollTrigger: { trigger: '.formats', start: 'top 82%' } });
   /* магнитная кнопка */
   const btn = document.querySelector('.btn');
   btn.addEventListener('mousemove', e => { const r = btn.getBoundingClientRect(); gsap.to(btn, { x: (e.clientX - r.left - r.width / 2) * .35, y: (e.clientY - r.top - r.height / 2) * .35, duration: .5, ease: 'power3.out' }); });
