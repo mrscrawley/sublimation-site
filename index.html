@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Иней - контрактная сублимация ягод и фруктов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@200;300;400;600&family=Geologica:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="preload" as="image" href="media/d-chamber.jpg">
+<link rel="stylesheet" href="style.css?v=2">
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <a class="logo" href="#top"><i></i>Иней</a>
+  <nav><a href="#process">Процесс</a><a href="#structure">Структура</a><a href="#forms">Форматы</a></nav>
+  <a class="nav-cta" href="#contact">Запросить образцы</a>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero-media">
+    <video id="heroVideo" muted playsinline loop autoplay poster="media/d-chamber.jpg"><source src="media/hero.mp4" type="video/mp4"></video>
+  </div>
+  <div class="hero-shade"></div>
+  <div class="hero-meta mono"><span>Контрактная сублимация</span><span>Ягоды · фрукты · под заказ</span></div>
+  <h1 class="hero-title">
+    <span class="mask"><span>Лёд уходит.</span></span>
+    <span class="mask"><span><em>Ягода</em> остаётся.</span></span>
+  </h1>
+  <div class="hero-foot">
+    <p>Убираем из ягоды воду и оставляем всё остальное: форму, цвет, аромат. Для кондитерских, молочных и снековых производств.</p>
+    <a class="scroll-cue mono" href="#process"><i></i>Смотреть процесс</a>
+  </div>
+</section>
+
+<section class="statement">
+  <p class="mono">Принцип</p>
+  <h2 id="statement">Сублимация - единственный способ сушки, при котором вода покидает продукт, так и не став жидкостью.</h2>
+</section>
+
+<section class="process" id="process">
+  <div class="stage" id="stage">
+    <canvas id="seq" aria-label="Малина в камере сублимации: вид меняется по стадиям процесса" role="img"></canvas>
+    <div class="stage-shade"></div>
+
+    <div class="hud">
+      <div class="g" id="gT"><span class="mono">Температура</span><span class="v"><b id="vT">+4</b><small>°C</small></span></div>
+      <div class="g" id="gP"><span class="mono">Давление</span><span class="v"><b id="vP">1013</b><small>мбар</small></span></div>
+      <div class="g" id="gM"><span class="mono">Влага</span><span class="v"><b id="vM">87</b><small>%</small></span></div>
+      <div class="g" id="gW"><span class="mono">Масса</span><span class="v"><b id="vW">100</b><small>г</small></span></div>
+      <div class="phase">
+        <svg id="pd" viewBox="0 0 260 176" role="img" aria-label="Фазовая диаграмма воды с траекторией партии"></svg>
+        <span class="mono">Фазовая диаграмма воды</span>
+      </div>
+    </div>
+
+    <div class="copy">
+      <article class="scene on">
+        <span class="no">01</span>
+        <h3>Зрелая ягода</h3>
+        <p>Берём ягоду в пике зрелости - именно этот вкус останется в готовом продукте. На 87 % она состоит из воды.</p>
+      </article>
+      <article class="scene">
+        <span class="no">02</span>
+        <h3>Вода становится льдом</h3>
+        <p>Быстрое охлаждение до −40 °C. Мелкие кристаллы не рвут клетки, поэтому ягода сохранит форму.</p>
+      </article>
+      <article class="scene">
+        <span class="no">03</span>
+        <h3>Лёд уходит в пар</h3>
+        <p>Вакуум ниже тройной точки воды. Лёд испаряется, минуя жидкую фазу: ягода не варится и не оседает.</p>
+      </article>
+      <article class="scene">
+        <span class="no">04</span>
+        <h3>Последние проценты</h3>
+        <p>Полки мягко нагреваются и забирают связанную влагу. Остаётся около 3 % - продукт хранится без консервантов.</p>
+      </article>
+      <article class="scene">
+        <span class="no">05</span>
+        <h3>Та же ягода, в семь раз легче</h3>
+        <p>Из 100 г свежей малины - 13 г сухой. Цвет, аромат и форма на месте.</p>
+      </article>
+    </div>
+
+    <div class="rail" id="rail"><span class="on">Сырьё</span><span>Заморозка</span><span>Сублимация</span><span>Досушка</span><span>Результат</span></div>
+  </div>
+</section>
+
+<section class="structure" id="structure">
+  <div class="st-media"><img src="media/f-cut.jpg" alt="Сублимированная малина в разломе: сухая пористая структура" loading="lazy"></div>
+  <div class="st-copy">
+    <p class="mono">Структура</p>
+    <h2 class="reveal"><span class="mask"><span>Вода ушла.</span></span><span class="mask"><span><em>Каркас</em> остался.</span></span></h2>
+    <p class="lead">На месте льда остаются поры. Поэтому ягода хрустит, не слёживается в сухих смесях и за минуты возвращает вкус в креме, йогурте или воде.</p>
+    <div class="nums">
+      <div><b><span data-count="7" data-prefix="×">×7</span></b><span class="mono">легче свежей</span></div>
+      <div><b><span data-count="3" data-suffix=" %">3 %</span></b><span class="mono">остаточной влаги</span></div>
+      <div><b><span data-count="24">24</span></b><span class="mono">месяца хранения</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="forms" id="forms">
+  <div class="forms-head">
+    <p class="mono">Форматы</p>
+    <h2 class="reveal"><span class="mask"><span>Под вашу <em>линию</em></span></span></h2>
+  </div>
+  <div class="forms-media">
+    <img src="media/e-forms.jpg" alt="Три формата сублимированной малины: целая ягода, кусочки и порошок" loading="lazy">
+    <div class="pin" style="--x:21%"><i></i><b>Целая ягода</b><span>декор, мюсли, шоколад</span></div>
+    <div class="pin" style="--x:50%"><i></i><b>Кусочки</b><span>батончики, начинки, выпечка</span></div>
+    <div class="pin" style="--x:79%"><i></i><b>Порошок</b><span>напитки, кремы, глазури</span></div>
+  </div>
+</section>
+
+<section class="cta" id="contact">
+  <p class="mono">Образцы и спецификация - по запросу</p>
+  <h2 class="reveal"><span class="mask"><span>Пришлём</span></span><span class="mask"><span><em>образцы</em></span></span></h2>
+  <a class="btn" href="#top"><span>Оставить заявку</span></a>
+</section>
+
+<footer><span class="mono">Иней - концепт страницы процесса</span><span class="mono">Название, тексты, цифры и изображения условные</span></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="media/seq.js?v=2"></script>
+<script src="app.js?v=2"></script>
+</body>
+</html>
