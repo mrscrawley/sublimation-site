@@ -25,7 +25,8 @@ if (!reduce) {
   gsap.from('.hero-title .mask>span', { yPercent: 110, duration: 1.5, ease: 'expo.out', stagger: .14, delay: .15 });
   gsap.from('.hero-meta,.hero-foot', { opacity: 0, y: 24, duration: 1.2, ease: 'power3.out', delay: .9, stagger: .12 });
   gsap.from('.hero-media', { scale: 1.18, duration: 2.6, ease: 'power3.out' });
-  gsap.to('.hero-media', { yPercent: 14, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  /* видео стоит за страницей; «Принцип» наезжает на него, а оно тает целиком, без края */
+  gsap.to('.hero-media', { opacity: 0, ease: 'none', scrollTrigger: { trigger: '.statement', start: 'top bottom', end: 'center 55%', scrub: true } });
   gsap.to('.hero-title', { yPercent: -18, opacity: .2, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 }
 
