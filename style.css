@@ -159,9 +159,7 @@ a:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
 
 /* заявка */
 .cta{padding:clamp(80px,12vw,180px) var(--pad) clamp(70px,9vw,150px);display:flex;flex-direction:column;align-items:center;gap:34px;text-align:center}
-.cta h2{font-size:clamp(80px,min(18vw,30svh),360px);transition:font-size .9s cubic-bezier(.2,.7,.1,1)}
-.cta.open h2{font-size:clamp(56px,min(10vw,15svh),200px)}
-.cta.open{padding-top:clamp(60px,9vw,120px)}
+.cta h2{font-size:clamp(80px,min(18vw,30svh),360px)}
 /* кнопка-ягода: сама сублимированная малина, текст на ней */
 .btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:clamp(170px,17vw,240px);aspect-ratio:1;color:#fff;font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;text-align:center;line-height:1.5;margin-top:clamp(10px,2vh,24px);will-change:transform}
 .btn::before{content:"";position:absolute;left:14%;right:14%;bottom:-6%;height:14%;border-radius:50%;background:radial-gradient(closest-side,rgba(120,10,45,.32),transparent);filter:blur(8px);transition:transform .7s var(--ease),opacity .7s}
