@@ -49,7 +49,7 @@ a:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
   -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 46%,rgba(0,0,0,.55) 66%,transparent 88%);mask-image:linear-gradient(180deg,#000 0%,#000 46%,rgba(0,0,0,.55) 66%,transparent 88%)}
 .hero-media video{width:100%;height:100%;object-fit:cover;object-position:62% 50%;transform:translateX(13%)}
 @media (max-width:900px){.hero-media video{object-position:68% 50%;transform:none}}
-.hero-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(var(--bg-rgb),.92) 0%,rgba(var(--bg-rgb),.6) 34%,rgba(var(--bg-rgb),0) 60%),linear-gradient(180deg,rgba(var(--bg-rgb),.55) 0%,rgba(var(--bg-rgb),0) 22%)}
+.hero-shade{position:absolute;inset:-8% 0 -45% 0;pointer-events:none;background:linear-gradient(90deg,rgba(var(--bg-rgb),.92) 0%,rgba(var(--bg-rgb),.6) 34%,rgba(var(--bg-rgb),0) 60%),linear-gradient(180deg,rgba(var(--bg-rgb),.55) 0%,rgba(var(--bg-rgb),0) 22%)}
 .hero-meta{position:absolute;top:96px;left:var(--pad);right:var(--pad);display:flex;justify-content:space-between;color:var(--ink);opacity:.8}
 .hero-title{position:relative;font-size:clamp(64px,min(15vw,25svh),300px);margin-left:-.02em}
 .hero-foot{position:relative;display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-top:clamp(14px,3vh,26px)}
